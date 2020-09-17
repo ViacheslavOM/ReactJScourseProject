@@ -68,34 +68,39 @@ export default class App extends Component {
         })
     }
 
-    onToggleImportant(id) {
-        this.setState(({data}) => {
-            const index = data.findIndex(elem => elem.id === id)
+    onToggleItemProperty(id, ) {
 
-            const old = data[index]
-            const newItem = {...old, important: !old.important}
-
-            const newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)]
-
-            return {
-                data: newArr
-            }
-        })
     }
 
-    onToggleLiked(id) {
+    commonToggle = ({id, isImportant = false, isLike = false}) => {
         this.setState(({data}) => {
-            const index = data.findIndex(elem => elem.id === id)
-
-            const old = data[index]
-            const newItem = {...old, like: !old.like}
-
-            const newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)]
-
+            const index = data.findIndex(elem => elem.id === id);
+     
+            const old = data[index];
+            const newItem = {...old};
+     
+            if (isImportant) {
+                newItem.important = !old.important;
+            }
+     
+            if (isLike) {
+                newItem.like = !old.like;
+            }
+     
+            const newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)];
+     
             return {
                 data: newArr
             }
-        })
+        });
+    }
+     
+    onToggleImportant = id => {
+        this.commonToggle({id: id, isImportant: true});
+    }
+     
+    onToggleLiked = id => {
+        this.commonToggle({id: id, isLike: true})
     }
 
     searchPost(items, term) {
